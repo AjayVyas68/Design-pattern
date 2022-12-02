@@ -18,7 +18,7 @@ public class SubnetAddresses {
                  addresses.hasMoreElements(); )
             {
                 InetAddress address = addresses.nextElement();
-                System.out.println("  " + address);
+                System.out.println(" add " + address);
             }
         }
 
