@@ -1,23 +1,13 @@
 package ch1;
 
 public class Student {
-    private String name;
-    private String first;
+    private final String name;
+    private final String first;
 
     public Student() {
         this.name = Builder.name;
         this.first = Builder.first;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setFirst(String first) {
-        this.first = first;
-    }
-
-
     public static class Builder {
         static String name;
         static String first;
@@ -25,26 +15,21 @@ public class Student {
         public Builder() {
 
         }
-
         public static Builder newInstance() {
             return new Builder();
         }
-
         public Builder setName(String name) {
-            this.name = name;
+            Builder.name = name;
             return this;
         }
-
         public Builder setFirst(String first) {
-            this.first = first;
+            Builder.first = first;
             return this;
         }
-
         public Student build() {
             return new Student();
         }
     }
-
     @Override
     public String toString() {
         return "Student{" + "name='" + this.name + '\'' + ", first='" + this.first + '\'' + '}';
@@ -52,19 +37,12 @@ public class Student {
 }
 
 class check {
-
     private volatile Student student;
-
     public check() {
-        Thread t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                student = Student.Builder.newInstance().setFirst("hello").setName("word").build();
-            }
-
-        });
+        Thread t1 = new Thread(() -> student = Student.Builder.newInstance().setFirst(" opr").setName("hello").build());
+        Thread t = new Thread(() -> student = Student.Builder.newInstance().setFirst("hello").setName("word").build());
         t.run();
+        t1.run();
     }
 
     public Student getStudent() {
@@ -75,6 +53,7 @@ class check {
 class run {
     public static void main(String[] args) {
         check c = new check();
+        System.out.println(c.getStudent());
         System.out.println(c.getStudent());
     }
 }
